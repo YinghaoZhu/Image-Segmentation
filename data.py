@@ -12,6 +12,7 @@ def adjust_data(img, mask):
     img = (255 -img)/255.0
 
     mask = mask / 255
+    # Notice: your pixel val must be 0/255
     mask[mask > 0.5] = 1
     mask[mask <= 0.5] = 0
     return (img, mask)
@@ -77,71 +78,6 @@ def testGenerator(test_path, target_size=(256, 256), as_gray=True):
 #
 def saveResult(save_path, npyfile, flag_multi_class=False, num_class=2):
 
-    for i, item in enumerate(npyfile):
-        io.imsave(os.path.join(save_path, "%d_predict.png" % i), item)
-
-
-# # def adjustData(img, mask):
-# #
-# #     img = img / 255
-# #     mask = mask / 255
-# #     mask[mask > 0.5] = 1
-# #     mask[mask <= 0.5] = 0
-# #     return(img, mask)
-# #
-# # # generate train data
-# #
-# # def geneTrainNpy(image_path, mask_path):
-# #     image_arr = []
-# #     mask_arr = []
-# #     # get all images from training set
-# #     img_paths = glob.glob(os.path.join(image_path, "*.tif"))
-# #     for img_path in img_paths:
-# #         img = io.imread(img_path)
-# #         img = trans.resize(img, (256, 256))
-# #         image_arr.append(img)
-# #
-# #     # get all ground truth image
-# #     seg_paths = glob.glob(os.path.join(mask_path, "*.tif"))
-# #     for seg_path in seg_paths:
-# #         seg = io.imread(seg_path)
-# #         seg = trans.resize(seg, (256, 256))
-# #         mask_arr.append(seg)
-# #     image_arr = np.array(image_arr)
-# #     mask_arr = np.array(mask_arr)
-# #     return image_arr, mask_arr
-# #
-# # def geneTestNpy(image_path):
-# #     test_arr = []
-# #     img_paths = glob.glob(os.path.join(image_path, "*.tif"))
-# #     print(image_path)
-# #     for img_path in img_paths:
-# #         img = read_img(img_path)
-# #         test_arr.append(img)
-# #
-# #     test_arr = np.array(test_arr)
-# #     print(test_arr[0])
-# #     print(len(test_arr))
-# #     print(test_arr.shape)
-# #     return test_arr
-#
-# # def read_img(img_path):
-# #     img = io.imread(img_path)
-# #     img = img / 8
-# #     img = img.astype(np.uint8)
-# #     img = trans.resize(img, (256, 256,1))
-# #     img = img_as_ubyte(img)
-# #     return img
-#
-#
-#
-# # img = io.imread(os.path.join("/Users/zhuyinghao/Desktop/dataset/yinghao/trainingset/groundtruth", "seg0_c1.tif"))
-# # print("******************")
-# # print(img)
-# # io.imshow(img)
-# # io.show()
-#
-for i in range(1, 11):
-    img = io.imread(os.path.join("/Users/zhuyinghao/Desktop/dataset/yinghao/testset/groundtruth", "%d.tif" % i))
-    img[img > 0] = 255
-    io.imsave("/Users/zhuyinghao/Desktop/dataset/yinghao/testset/groundtruth/%d.tif" % i, img)
+    for i,item in enumerate(npyfile):
+        img = item[:,:,0]
+        io.imsave(os.path.join(save_path,"%d_predict.png"%i),img)
